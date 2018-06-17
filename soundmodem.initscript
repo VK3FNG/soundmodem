@@ -1,0 +1,56 @@
+#! /bin/sh
+#
+# soundmodem    Start Soundmodem driver.
+#
+# Author:       Thomas Sailer, <sailer@ife.ee.ethz.ch>
+#
+# chkconfig: 345 50 50
+# description: This script starts/stops the Soundmodem driver
+# processname: soundmodem
+# pidfile: /var/run/soundmodem.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Get config.
+. /etc/sysconfig/network
+
+## Check that networking is up.
+#if [ ${NETWORKING} = "no" ]
+#then
+#	exit 0
+#fi
+
+[ -f /usr/sbin/soundmodem ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+	echo -n "Starting Soundmodem: "
+	daemon /usr/sbin/soundmodem --daemonize
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/soundmodem
+	;;
+  stop)
+	echo -n "Stopping Soundmodem: "
+	killproc soundmodem
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/soundmodem
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	RETVAL=$?
+        ;;
+  status)
+	status soundmodem
+	RETVAL=$?
+	;;
+  *)
+	echo "Usage: soundmodem {start|stop|restart|status}"
+	exit 1
+esac
+
+exit $RETVAL

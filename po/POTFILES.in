@@ -1,0 +1,7 @@
+# List of source files containing translatable strings.
+
+configapp/src/app.c
+configapp/src/diag.c
+configapp/src/interface.c
+configapp/src/main.c
+configapp/src/support.c

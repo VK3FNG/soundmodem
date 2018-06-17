@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<modem>
+<configuration name="a">
+  <audio chan="0" snr="15" />
+  <channel>
+    <pkt mode="kiss" file="/tmp/test" />
+    <demod mode="afsk" bps="1200" />
+    <mod mode="afsk" bps="1200" />
+  </channel>
+</configuration>
+<configuration name="testconfig">
+  <audio file="/dev/audio" chan="0" snrmode="0" srate="38400" />
+  <!-- ptt file="/dev/ttya" /-->
+  <channel>
+    <pkt mode="kiss" file="/tmp/test" snrstart="25" snrend="10" snrstep="-1" bits="1000000"  />
+    <!--mkiss file="" /-->
+    <demod mode="fsk" bps="9600" />
+    <mod mode="fsk" bps="9600" />
+  </channel>
+</configuration>
+<configuration name="simfskwg">
+  <audio chan="0" snrmode="0" srate="38400" />
+  <channel>
+    <pkt mode="kiss" snrstart="25" snrend="10" snrstep="-1" bits="1000000" />
+    <demod mode="fsk" bps="9600" />
+    <mod mode="fsk" bps="9600" />
+  </channel>
+</configuration>
+<configuration name="simfskf2">
+  <audio chan="0" snrmode="1" srate="38400" />
+  <channel>
+    <pkt mode="kiss" snrstart="25" snrend="10" snrstep="-1" bits="1000000" />
+    <demod mode="fsk" bps="9600" />
+    <mod mode="fsk" bps="9600" />
+  </channel>
+</configuration>
+<configuration name="simfskvewg">
+  <audio chan="0" snrmode="0" srate="38400" />
+  <channel>
+    <pkt mode="kiss" snrstart="25" snrend="10" snrstep="-1" bits="1000000" />
+    <demod mode="fskpsp" bps="9600" />
+    <mod mode="fsk" bps="9600" />
+  </channel>
+</configuration>
+<configuration name="simfskvef2">
+  <audio chan="0" snrmode="1" srate="38400" />
+  <channel>
+    <pkt mode="kiss" snrstart="25" snrend="10" snrstep="-1" bits="1000000" />
+    <demod mode="fskpsp" bps="9600" />
+    <mod mode="fsk" bps="9600" />
+  </channel>
+</configuration>
+</modem>

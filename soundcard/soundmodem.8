@@ -1,0 +1,61 @@
+.\" Copyright 2000 Thomas Sailer (sailer@ife.ee.ethz.ch)
+.\" May be distributed under the GNU General Public License
+.\"
+.\" "
+.TH SOUNDMODEM 8 "1 August 2000" "SOUNDMODEM 0.2" "Linux AX.25 Utilities Manual"
+.SH NAME
+soundmodem \- Soundcard modem driver
+.SH SYNOPSIS
+.B soundmodem
+.B "[ configfile ]"
+.B "[ \-sSRM ]"
+.B "[\-v verbosity level]"
+.B "[\-c configuration name]"
+
+
+.SH DESCRIPTION
+.B soundmodem
+is a user mode driver for packet radio using a standard soundcard
+supported by OSS/Free. It integrates tightly with the kernel MKISS
+driver (enable CONFIG_MKISS).
+.B soundmodem
+is controlled by a configuration file. The default filename is
+/etc/ax25/soundmodem.conf. Any other name may be specified on the command line.
+
+
+
+.SH OPTIONS
+.B soundmodem
+accepts the following options:
+
+.TP
+.B \-h
+.B \--help
+Display an overview of the available command line parameters and exit.
+.TP
+.B \-v level
+Set the verbosity level. 0 only displays fatal errors.
+.TP
+.B \-c configname
+Use the named configuration. If absent the first is taken.
+.TP
+.B \-s
+Log messages to syslog instead of standard out.
+.TP
+.B \-S
+Disable the use of SIMD instructions (aka MMX, VIS, etc).
+.TP
+.B \-R
+Run with realtime scheduling (SCHED_RR). Use with caution.
+.TP
+.B \-M
+Lock memory down in RAM; disables swapping soundmodem out.
+
+
+.SH "SEE ALSO"
+.nf
+.BR ifconfig "\ (8), " soundmodemconfig "\ (8)"
+.fi
+
+.SH AUTHOR
+soundmodem was written by Thomas Sailer, HB9JNX/AE4WA (sailer@ife.ee.ethz.ch).

@@ -1,0 +1,40 @@
+#include <windows.h>
+
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x0L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "HB9JNX/AE4WA\0"
+            VALUE "FileDescription", "SoundModem Configurator\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "soundmodemconfig\0"
+            VALUE "LegalCopyright", "Copyright © 1999-2000\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "soundmodemconfig.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "SoundModem\0"
+            VALUE "ProductVersion", "1.00a\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

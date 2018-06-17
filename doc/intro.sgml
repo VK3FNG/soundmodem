@@ -1,0 +1,16 @@
+<!-- -*- sgml -*- -->
+ <chapter id="index"> <!-- so generated HTML starts here -->
+
+  <title>SoundModem Documentation</title>
+
+  <!-- <para>This was built on &builddate;</para> -->
+
+  <para>Blah</para>
+
+ </chapter>
+
+<!-- Local Variables: -->
+<!-- sgml-indent-step: 1 -->
+<!-- sgml-indent-data: 1 -->
+<!-- sgml-parent-document: "main.sgml" -->
+<!-- End: -->

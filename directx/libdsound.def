@@ -1,0 +1,9 @@
+EXPORTS
+	DirectSoundCaptureEnumerateW@8
+	DirectSoundCaptureEnumerateA@8
+	DirectSoundCaptureCreate@12
+	DllGetClassObject
+	DllCanUnloadNow
+	DirectSoundEnumerateW@8
+	DirectSoundEnumerateA@8
+	DirectSoundCreate@12

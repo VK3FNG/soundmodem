@@ -1,0 +1,58 @@
+#include "resource.h"
+
+#include "windows.h"
+
+#define IDC_STATIC -1
+
+IDD_DIALOG1 DIALOGEX 0, 0, 232, 70
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,175,12,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,175,37,50,14
+    RTEXT           "Configuration",IDC_STATIC,15,16,55,8,0,WS_EX_RIGHT
+    COMBOBOX        IDC_CONFIG,73,13,50,145,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Author: Thomas Sailer, HB9JNX/AE4WA",IDC_STATIC,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,3,60,130,8
+END
+
+
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x0L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080704b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "HB9JNX\0"
+            VALUE "FileDescription", "SoundModem\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "SoundModem FlexNet driver\0"
+            VALUE "LegalCopyright", "Copyright © 1999-2000\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "soundmodem.dll\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "SoundModem\0"
+            VALUE "ProductVersion", "1.00a\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

@@ -1,0 +1,299 @@
+AC_INIT(soundmodem.spec)
+AC_CANONICAL_SYSTEM
+
+AM_INIT_AUTOMAKE(soundmodem, 0.16)
+AM_CONFIG_HEADER(config.h)
+
+AC_PREREQ(2.53)
+
+dnl AC_CHECK_TOOL()
+
+AC_PROG_MAKE_SET
+AC_ISC_POSIX
+AC_PROG_CC
+AM_PROG_CC_STDC
+dnl AC_PROG_RANLIB
+AC_C_CONST
+AC_C_INLINE
+AC_HEADER_STDC
+AC_FUNC_ALLOCA
+AC_PROG_CXX
+
+AC_CHECK_PROG(RANLIB, ranlib, ranlib, :)
+AC_CHECK_PROG(DLLTOOL, dlltool, dlltool, dlltool)
+AC_CHECK_PROG(AS, as, as, as, as)
+AC_CHECK_PROG(AR, ar, ar, ar, ar)
+AC_CHECK_PROG(LD, ld, ld, ld, ld)
+AC_CHECK_PROG(WINDRES, windres, windres, i686-pc-cygwin-windres)
+
+AC_CYGWIN
+AC_MINGW32
+AC_EXEEXT
+AC_OBJEXT
+
+dnl check for cross compiler path
+if test x$cross_compiling = xyes; then
+  AC_MSG_CHECKING(for cross compiler path)
+  if test -d /usr/local/cross/i686-pc-cygwin; then
+    CROSSCOMPPATH=/usr/local/cross/i686-pc-cygwin
+  elif test -d /usr/local/cygwin/i686-pc-cygwin; then
+    CROSSCOMPPATH=/usr/local/cygwin/i686-pc-cygwin
+  else
+    AC_ERROR("cross compiler not found")
+  fi
+  AC_MSG_RESULT($CROSSCOMPPATH)
+fi
+
+if test x$CYGWIN != xyes -a x$MINGW32 != xyes; then
+  AC_CHECK_LIB(m,sqrt)
+fi
+AC_CHECK_LIB(pthread32,pthread_create,LIBTHREAD="$LIBTHREAD -lpthread32",AC_CHECK_LIB(pthread,pthread_create,LIBTHREAD="$LIBTHREAD -lpthread"))
+AC_CHECK_LIB(posix4,sched_setscheduler)
+AC_CHECK_LIB(uuid,GUID_NULL)
+AC_CHECK_FUNCS(getopt_long,,[AC_LIBOBJ([getopt]) AC_LIBOBJ([getopt1])])
+AC_CHECK_HEADERS(sys/audioio.h stropts.h sys/conf.h sys/soundcard.h sys/ioctl.h time.h inttypes.h net/if_arp.h)
+AC_CHECK_HEADERS(pty.h getopt.h syslog.h sched.h linux/sockios.h sys/ioccom.h linux/ppdev.h linux/hidraw.h)
+AC_CHECK_HEADERS(sys/socket.h linux/if.h,,,
+[[
+#if HAVE_SYS_SOCKET_H
+# include <sys/socket.h>
+#endif
+]])
+AC_CHECK_HEADERS(sys/socket.h linux/ax25.h,,,
+[[
+#if HAVE_SYS_SOCKET_H
+# include <sys/socket.h>
+#endif
+]])
+AC_CHECK_FUNCS(snprintf vsnprintf syslog vsyslog openlog closelog)
+AC_CHECK_FUNCS(mlockall)
+
+AC_MSG_CHECKING(for signed bittypes)
+signedbittypes=no
+AC_TRY_COMPILE([#include <sys/types.h>], 
+     [ int8_t a; int16_t c; int32_t e; ],
+     AC_DEFINE(HAVE_SIGNED_BITTYPES,1,[define if bittypes like int16_t are defined]) signedbittypes=yes)
+AC_MSG_RESULT($signedbittypes)
+
+AC_MSG_CHECKING(for unsigned bittypes)
+unsignedbittypes=no
+AC_TRY_COMPILE([#include <sys/types.h>], 
+     [ u_int8_t b; u_int16_t d; u_int32_t f; ],
+     AC_DEFINE(HAVE_UNSIGNED_BITTYPES,1,[define if bittypes like u_int16_t are defined]) unsignedbittypes=yes)
+AC_MSG_RESULT($unsignedbittypes)
+
+AC_TYPE_SIGNAL
+
+AC_MSG_CHECKING(for M_PI)
+mpi=no
+AC_TRY_COMPILE([#include <math.h>], 
+     [ double f = M_PI; ],
+     mpi=yes,AC_DEFINE(M_PI,3.14159265358979323846,[define if M_PI is not defined by math.h]))
+AC_MSG_RESULT($mpi)
+
+AC_MSG_CHECKING(for M_LOG10E)
+mlog10e=no
+AC_TRY_COMPILE([#include <math.h>], 
+     [ double f = M_LOG10E; ],
+     mlog10e=yes,AC_DEFINE(M_LOG10E,0.43429448190325182765,[define if M_LOG10E is not defined by math.h]))
+AC_MSG_RESULT($mlog10e)
+
+dnl check for ALSA
+case $target_os in
+  linux*)
+    AM_PATH_ALSA(1.0.0, AC_DEFINE(HAVE_ALSA,1,[Define if ALSA is available]))
+    ;;
+esac
+AC_SUBST(HAVE_ALSA)
+
+dnl Add the languages which your application supports here.
+ALL_LINGUAS="sv fr"
+AM_GNU_GETTEXT([external])
+
+dnl Set PACKAGE_LOCALE_DIR in config.h.
+if test "x${prefix}" = "xNONE"; then
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR,"${ac_default_prefix}/${DATADIRNAME}/locale",[various directories])
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR,"${prefix}/${DATADIRNAME}/locale",[various directories])
+fi
+
+dnl Set PACKAGE_DATA_DIR in config.h.
+if test "x${datadir}" = 'x${prefix}/share'; then
+  if test "x${prefix}" = "xNONE"; then
+    AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,"${ac_default_prefix}/share/${PACKAGE}",[various directories])
+  else
+    AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,"${prefix}/share/${PACKAGE}",[various directories])
+  fi
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR,"${datadir}/${PACKAGE}",[various directories])
+fi
+
+dnl Set PACKAGE_SOURCE_DIR in config.h.
+packagesrcdir=`cd $srcdir && pwd`
+AC_DEFINE_UNQUOTED(PACKAGE_SOURCE_DIR,"${packagesrcdir}",[various directories])
+
+if test x$CYGWIN = xyes -o x$MINGW32 = xyes; then
+  AC_DEFINE(WIN32,1,[define if compiling under Windows32])
+  LIBS="$LIBS -ldsound -lgdi32"
+fi
+
+if test x$cross_compiling = xyes; then
+  gtk=no
+  xlibs="$LIBS"
+  LIBS="$LIBS -L$CROSSCOMPPATH/gtk/lib"
+  AC_CHECK_LIB(gtk,gtk_main,gtk=yes)
+  LIBS="$xlibs"
+  if test x$gtk = xyes; then
+    GTK_CFLAGS="-I$CROSSCOMPPATH/gtk/include -I$CROSSCOMPPATH/gtk/include/glib -I$CROSSCOMPPATH/gtk/include/gdk"
+    GTK_LIBS="-L$CROSSCOMPPATH/gtk/lib -lgtk -lgdk -lglib"
+    PTHREAD_CFLAGS="-I$CROSSCOMPPATH/gtk/include"
+    PTHREAD_LIBS="-L$CROSSCOMPPATH/gtk/lib"
+    AUDIOFILE_CFLAGS="-I$CROSSCOMPPATH/audiofile/include"
+    AUDIOFILE_LIBS="-L$CROSSCOMPPATH/audiofile/lib -laudiofile"
+  fi
+else
+  PKG_CHECK_MODULES(XML,libxml-2.0)
+  PKG_CHECK_MODULES(GTK,gtk+-2.0 >= 2.6.0)
+  PKG_CHECK_MODULES(AUDIOFILE,audiofile)
+fi
+
+dnl Check for recently introduced GTK symbols
+xlibs="$LIBS"
+LIBS="$GTK_LIBS $LIBS"
+AC_CHECK_FUNCS(gtk_widget_set_tooltip_text gtk_widget_is_drawable gtk_widget_get_realized gtk_widget_set_realized gtk_widget_set_can_default gtk_widget_set_can_focus gtk_dialog_get_action_area gtk_dialog_get_content_area gtk_widget_get_allocation gtk_widget_set_allocation gtk_widget_get_state gtk_widget_get_window gtk_widget_set_window gtk_widget_set_has_window gtk_widget_style_attach)
+LIBS="$xlibs"
+
+dnl Enable to try building with XXX_DISABLE_DEPRECATED. Never ship with
+dnl them enabled!
+dnl GTK_CFLAGS="$GTK_CFLAGS -DPANGO_DISABLE_DEPRECATED -DG_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED  -DGSEAL_ENABLE"
+dnl Only use -Wall if we have gcc
+if test "x$GCC" = "xyes"; then
+  if test -z "`echo "$CFLAGS" | grep "\-Wall" 2> /dev/null`" ; then
+    CFLAGS="$CFLAGS -Wall -O2"
+    CXXFLAGS="$CXXFLAGS -Wall -O2"
+  fi
+fi
+
+if test x$CYGWIN = xyes -o x$MINGW32 = xyes; then
+  XML_CFLAGS=
+  XML_LIBS=
+else
+  xlibs=$LIBS
+  LIBS=
+  AC_CHECK_LIB(util,openpty)
+  AC_CHECK_FUNCS(openpty,LIBTHREAD="$LIBTHREAD $LIBS",[AC_LIBOBJ([openpty])])
+  LIBS=$xlibs
+fi
+
+AC_CHECK_LIB(hamlib,rigerror)
+
+xcflags="$CFLAGS"
+CFLAGS="$CFLAGS -I$srcdir/directx/include -I$srcdir/directx/include/directx6"
+AC_MSG_CHECKING(for DirectX includes)
+directx=no
+AC_TRY_COMPILE([#include <directx.h>], 
+     [ LPDIRECTSOUND dsplay; LPDIRECTSOUNDCAPTURE dsrec; ],
+     AC_DEFINE(HAVE_DIRECTX,1,[define if we have DirectX includes]) directx=yes)
+AC_MSG_RESULT($directx)
+CFLAGS="$xcflags"
+
+AC_MSG_CHECKING(for ifr_newname in struct ifreq)
+ifrnewname=no
+AC_TRY_COMPILE([#include <linux/if.h>],
+     [struct ifreq ifr; ifr.ifr_newname[0]=0; ], AC_DEFINE(HAVE_IFRNEWNAME,1,[define if struct ifreq has the ifr_newname symbol]) ifrnewname=yes)
+AC_MSG_RESULT($ifrnewname)
+
+xlibs=$LIBS
+LIBS=
+AC_CHECK_FUNCS(vsnprintf,,[AC_LIBOBJ([vsnprintf])])
+AC_CHECK_FUNCS(random,,[AC_LIBOBJ([random])])
+LIBS=$xlibs
+
+AC_MSG_CHECKING(for MKISS (N_AX25 line discipline))
+mkiss=no
+AC_EGREP_CPP(yes,
+     [#include <sys/ioctl.h>
+     #ifdef N_AX25
+       yes
+     #endif
+     ], AC_DEFINE(HAVE_MKISS,1,[define if struct ifreq has the ifr_newname symbol]) mkiss=yes)
+AC_MSG_RESULT($mkiss)
+
+dnl Use -Wall if we have gcc.
+changequote(,)dnl
+if test "x$GCC" = "xyes"; then
+  case " $CFLAGS " in
+  *[\ \	]-Wall[\ \	]*) ;;
+  *) CFLAGS="$CFLAGS -Wall" ;;
+  esac
+fi
+changequote([,])dnl
+
+AC_ARG_ENABLE(mmx,
+[  --enable-mmx            Utilize MMX(tm) instructions if available (x86 only)],
+[case "${enableval}" in
+  yes) usemmx=true ;;
+  no)  usemmx=false ;;
+  *) AC_MSG_ERROR(bad value ${enableval} for --enable-mmx) ;;
+esac],[usemmx=false])
+
+AC_ARG_ENABLE(vis,
+[  --enable-vis            Utilize VIS(tm) instructions if available (ultrasparc only)],
+[case "${enableval}" in
+  yes) usevis=true ;;
+  no)  usevis=false ;;
+  *) AC_MSG_ERROR(bad value ${enableval} for --enable-vis) ;;
+esac],[usevis=false])
+
+if test x$usemmx = xtrue; then
+    AC_DEFINE(USEMMX,1,[define if MMX is to be used])
+fi
+
+if test x$usevis = xtrue; then
+    AC_DEFINE(USEVIS,1,[define if VIS is to be used])
+    dnl CFLAGS="$CFLAGS -mv8plus -mvis -Wa,-xarch=v8plusa"
+    CFLAGS="$CFLAGS -Wa,-xarch=v8plusa"
+fi
+
+AM_CONDITIONAL(USEMMX, test x$usemmx = xtrue)
+AM_CONDITIONAL(USEVIS, test x$usevis = xtrue)
+AM_CONDITIONAL(CROSSCOMP, test x$cross_compiling = xyes)
+AM_CONDITIONAL(DIRECTX, test x$directx = xyes)
+AM_CONDITIONAL(WIN32, test x$CYGWIN = xyes -o x$MINGW32 = xyes)
+
+AC_SUBST(HAVE_BITTYPES)
+AC_SUBST(HAVE_DIRECTX)
+AC_SUBST(HAVE_MKISS)
+AC_SUBST(HAVE_IFRNEWNAME)
+AC_SUBST(M_PI)
+AC_SUBST(LIBTHREAD)
+AC_SUBST(USEMMX)
+AC_SUBST(USEVIS)
+AC_SUBST(XML_CFLAGS)
+AC_SUBST(XML_LIBS)
+AC_SUBST(GTK_LIBS)
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(PTHREAD_LIBS)
+AC_SUBST(PTHREAD_CFLAGS)
+AC_SUBST(WIN32)
+AC_SUBST(AR)
+AC_SUBST(AS)
+AC_SUBST(LD)
+AC_SUBST(RANLIB)
+
+AC_OUTPUT([Makefile
+po/Makefile.in
+directx/Makefile
+libmisc/Makefile
+matlib/Makefile
+afsk/Makefile
+fsk/Makefile
+pammodem/Makefile
+pskmodem/Makefile
+newqpsk/Makefile
+p3dmodem/Makefile
+soundcard/Makefile
+flexdrv/Makefile
+doc/Makefile
+configapp/Makefile
+configapp/src/Makefile])

@@ -1,0 +1,36 @@
+<!-- -*- sgml -*- -->
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V3.1//EN"[
+<!-- <!ENTITY builddate SYSTEM "builddate"> -->
+<!ENTITY intro SYSTEM "intro.sgml">
+
+
+]>
+
+<book id="soundmodemdoc">
+  <bookinfo>
+    <title>SoundModem Documentation</title>
+    <authorgroup>
+      <author>
+	<firstname>Thomas</firstname>
+	<surname>Sailer</surname>
+	<affiliation>
+	  <address><email>sailer@ife.ee.ethz.ch</email></address>
+	</affiliation>
+      </author>
+    </authorgroup>
+
+    <copyright>
+      <year>2000</year>
+      <holder>Thomas Sailer</holder>
+    </copyright>
+
+  </bookinfo>
+
+  &intro;
+
+</book>
+
+<!-- Local Variables: -->
+<!-- sgml-indent-step: 1 -->
+<!-- sgml-indent-data: 1 -->
+<!-- End: -->

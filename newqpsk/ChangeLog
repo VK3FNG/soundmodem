@@ -1,0 +1,58 @@
+2001-01-19  Tomi Manninen  <tpm@oh2bns.ampr.org>
+
+	* Implemented runtime configurable tune/sync length adjustment
+
+2000-09-16  Tomi Manninen  <tpm@oh2bns.ampr.org>
+
+	* The modem now does variable sampling rates!
+
+2000-08-14  Tomi Manninen  <tpm@oh2bns.ampr.org>
+
+	* Integrated to the new soundmodem code from Thomas.
+
+2000-07-02  Tomi Manninen  <tpm@oh2bns.ampr.org>
+
+	* Version 0.0.4
+
+	* RPM spec file
+
+	* Changed the default channel access parameters
+
+2000-03-11  Tomi Manninen  <tpm@oh2bns.ampr.org>
+
+	* Some reordering in rxdata()
+
+	* Implemented frequency and sync tracking in data phase
+
+	* Implemented data carrier S/N reporting
+
+	* Hopefully fixed the "modulate_calib error" problem
+
+2000-03-07  Tomi Manninen  <tpm@oh2bns.ampr.org>
+
+	* Version 0.0.3
+
+	* The modem should now work with the standard kernel sound
+	  drivers as well (I use ALSA drivers...)
+
+	* Added BCH(15,7) error correction code. See the supplied
+	  soundmodem.conf sample file for details. (The code is from
+	  Charles Brain G4GUO, I hope he doesn't mind...)
+
+	* Minor changes in the documentation
+
+2000-02-07  Tomi Manninen  <tpm@oh2bns.ampr.org>
+
+	* Version 0.0.2
+
+	* Changed to using a config.h file
+
+	* A small optimization in newqpskrx.c
+
+	* The bug causing TX to hang should be squashed now (a typo in
+	  newqpsktx.c...)
+
+1999-12-14  Tomi Manninen  <tpm@oh2bns.ampr.org>
+
+	* First public release (0.0.1)
+

@@ -1,0 +1,133 @@
+NEWQPSK modem for the Usermode Soundcard Modem driver
+=====================================================
+
+This package implements the NEWQPSK protocol (also known as Q15X25) as
+designed and defined by Pawel Jalocha, SP9VRC, <pawel.jalocha@cern.org>.
+Pawel's original modem is written in Motorola 56k assembler for the
+DSP56002EVM evaluation module or the Alef Null DSP Card 4. This code
+is a port of the original code to C.
+
+Most of the features of the original modem are implemented. The most
+important feature still lacking is the support for tuning the transceiver.
+The modem has been used for real life QSOs with performance comparable to
+the original modem.
+
+Soundmodem configuration
+========================
+
+There is an IMPORTANT detail in soundmodem core configuration concerning
+NEWQPSK. In the "Channel Access" section one should set "TxDelay" to a
+non-zero value. The actual value does not matter, the modem will ignore
+it. (If your transmitter is slow and you need to compensate that then you
+can increase "Tune length" as explained later.) Equally important is that
+one sets "TxTail" to zero. Failing to set these will cause the NEWQPSK
+modem to behave erratically.
+
+The actual NEWQPSK modulator and demodulator are subject to five
+configuration parameters that can be set with the `soundmodemconfig' tool:
+
+  Bits per second
+
+	This sets the modem raw bit rate. The available range is 1000 to
+	5000. Rates 2500bps and 3000bps correspond to sample rates of
+	8000sps and 9600sps in the original code respectively.
+
+  Interleave depth
+
+	Sets the interleave depth. Allowed range is 0...16. Zero
+	disables interleaving.
+
+  FEC level
+
+	Sets the used error correcting code. Possible values are:
+
+		0	no FEC
+		1	simple (15,11) FEC
+		2	BCH (15,7) FEC.
+		3	Walsh (15,5) FEC
+
+	Note that BCH (15,7) is NOT compatible with the original
+	EVM56K modem.
+
+	The FEC overhead can be calculated from the figures in
+	parenthesis. For example Walsh (15,5) lowers the user data
+	rate to 2500*5/15 = 833.3 bps.
+
+  Tune length
+
+	On modulator side this sets the length of the tune preamble
+	in symbols. Allowed range is 0...64.
+
+	On demodulator side this sets the minimum of received
+	tune preamble symbols needed to make a tuning decision.
+	Allowed range is 0...32. Zero means the demodulator will jump
+	directly to waiting sync state.
+
+  Sync length
+
+	On modulator side this sets the length of the sync preamble
+	in symbols. Allowed range is 16...64.
+
+	On demodulator side this sets the minimum of received
+	sync preamble symbols needed to make a symbol sync decision.
+	Allowed range is 8...32.
+
+More detailed configuration of the modem parameters can be done at compile
+time with the modemconfig.h file in this directory. The parameters there
+are not to be changed unless you know what you are doing... :)
+
+NEWQPSK FEATURES
+================
+
+NEWQPSK modem was designed primarily with HF in mind. You are supposed to
+connect it to a normal HF SSB rig. However NEWQPSK might also find some
+use in VHF/UHF FM packet. As FM has no frequency ambiquity the tune
+preamble can be disabled (tune length = 0). Also it might make sense to
+shorten the sync preamble.
+
+NEWQPSK is an AX.25 packet modem and can be used for anything regular
+packet can, including TCP/IP. Here is a short list of NEWQPSK highlights:
+
+  - AX.25 compatible
+
+  - 15 carriers spaced by 125 Hz (150 Hz) modulated with DQPSK
+    (differential 4-level phase shift keying) at 83.33 baud (100 baud)
+
+  - Total raw data rate 2500 bps (3000 bps)
+
+  - Two phase preamble for frequency shift correction and fast symbol
+    sync. The modem can correct frequency shift up to about 100 Hz.
+
+  - Forward Error Correction: three simple schemes with different levels
+    of data redundancy
+
+  - Time/frequency diversity (interleave) to de-localize burst errors
+
+(The figures in parenthesis above are for sample rate of 9600 sps.)
+
+Note that the envelope of the transmitted signal is NOT constant. The
+modulation has a crest factor of about XX dB which means that with a 100W
+transmitter and a power meter that reads average power you should adjust
+the output reading to about YY Watts. Exceeding this will cause clipping
+that will not only cause interference to other band users but also make
+copy at the other end worse.
+
+Also keep in mind that this is a WIDE mode (about 2000...2400Hz wide). You
+should be very careful not to transmit over other band users and you
+should probably keep away from the narrow band digital segments.
+
+DISCLAIMER
+==========
+
+The sole purpose for me to write this modem implementation was to learn
+about DSP in general and Pawel's novel modem in particular. I'm fairly new
+to DSP and this code is mostly a result of countless hours of staring at
+the original Motorola 56K assembler source and banging my head against the
+wall... I can't claim I understand all aspects and every detail in the
+modem. There are probably misunderstandings and errors in the code and if
+you spot one, please tell me. I want to learn more. Also if you have ideas
+for further development please share them with me. I have already some
+ideas of my own.
+
+-- 
+Tomi Manninen, OH2BNS <tomi.manninen@hut.fi>
