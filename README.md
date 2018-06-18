@@ -1,6 +1,8 @@
 # Soundmodem 0.16 
 (c)2000 Thomas Sailer, Tomi Manninen.
 
+## Soundmodem 0.16 now compiles with GCC5!
+
 This software appears to have been abandoned by it's authors, and I have 
 uploaded it here as I continue to tidy up the code and work on it.
 
