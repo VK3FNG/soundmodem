@@ -13,7 +13,7 @@ struct fecstate {
 
 /* --------------------------------------------------------------------- */
 
-extern inline void init_fec(struct fecstate *f)
+static inline void init_fec(struct fecstate *f)
 {
 	switch (f->feclevel) {
 	case 0:
@@ -33,7 +33,7 @@ extern inline void init_fec(struct fecstate *f)
 
 /* --------------------------------------------------------------------- */
 
-extern inline void init_inlv(struct fecstate *f)
+static inline void init_inlv(struct fecstate *f)
 {
         int i;
 

@@ -54,16 +54,16 @@
 
 #if !defined(USEMMX) && !defined(USEVIS)
 
-extern inline void initsimd(int enable)
+static inline void initsimd(int enable)
 {
 }
 
-extern inline int checksimd(void)
+static inline int checksimd(void)
 {
 	return 0;
 }
 
-extern inline int simdfir16(const int16_t *p1, const int16_t *p2, unsigned int nr)
+static inline int simdfir16(const int16_t *p1, const int16_t *p2, unsigned int nr)
 {
 	int s = 0;
 
@@ -72,7 +72,7 @@ extern inline int simdfir16(const int16_t *p1, const int16_t *p2, unsigned int n
 	return s;
 }
 
-extern inline void simdpreparefpu(void)
+static inline void simdpreparefpu(void)
 {
 }
 
@@ -82,7 +82,7 @@ extern unsigned int simd_enabled;
 
 extern void initsimd(int enable);
 
-extern inline int checksimd(void)
+static inline int checksimd(void)
 {
 	return simd_enabled;
 }
@@ -91,7 +91,7 @@ extern inline int checksimd(void)
 
 #define MMXCLOBBER "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)"
 
-extern inline int simdfir16(const int16_t *p1, const int16_t *p2, unsigned int nr)
+static inline int simdfir16(const int16_t *p1, const int16_t *p2, unsigned int nr)
 {
 	unsigned int i, j;
 	int s = 0;
@@ -114,7 +114,7 @@ extern inline int simdfir16(const int16_t *p1, const int16_t *p2, unsigned int n
 	return s;
 }
 
-extern inline void simdpreparefpu(void)
+static inline void simdpreparefpu(void)
 {
 	if (checksimd())
 		asm volatile("emms");
@@ -157,7 +157,7 @@ extern inline void simdpreparefpu(void)
 	return s;
 }
 
-extern inline void simdpreparefpu(void)
+static inline void simdpreparefpu(void)
 {
 }
 

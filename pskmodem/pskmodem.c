@@ -262,7 +262,7 @@ static void rxrotate(cplxshort_t *ptr, unsigned int nr, unsigned int carphase, u
 	}
 }
 
-extern inline int calcsync(int *toten, int *corren, cplxshort_t *samples)
+static inline int calcsync(int *toten, int *corren, cplxshort_t *samples)
 {
 	const cplxshort_t *tr = traincorrrotated;
 	unsigned int i;

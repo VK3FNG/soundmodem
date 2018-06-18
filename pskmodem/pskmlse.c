@@ -493,7 +493,7 @@ static void simdtrellis(unsigned int *nodemetric1, unsigned int *nodemetric2, un
 
 #else
 
-extern inline void simdtrellis(unsigned int *nodemetric1, unsigned int *nodemetric2, unsigned int *metrictab, unsigned short *backptr, int vr, int vi)
+static inline void simdtrellis(unsigned int *nodemetric1, unsigned int *nodemetric2, unsigned int *metrictab, unsigned short *backptr, int vr, int vi)
 {
 }
 
@@ -582,7 +582,7 @@ static void simdinitmetric(const cplxshort_t *channel, metrictab_t *metrictab)
 
 #else
 
-extern inline void simdinitmetric(const cplxshort_t *channel, metrictab_t *metrictab)
+static inline void simdinitmetric(const cplxshort_t *channel, metrictab_t *metrictab)
 {
 }
 

@@ -12,7 +12,7 @@
 /* ---------------------------------------------------------------------- */
 
 #ifndef __HAVE_ARCH_MAC
-extern inline float mac(const float *a, const float *b, unsigned int size)
+static inline float mac(const float *a, const float *b, unsigned int size)
 {
 	float sum = 0;
 	unsigned int i;

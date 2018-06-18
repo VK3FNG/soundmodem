@@ -1,7 +1,7 @@
 #ifndef _FILTER_I386_H
 #define _FILTER_I386_H
 #define __HAVE_ARCH_MAC
-extern inline float mac(const float *a, const float *b, unsigned int size)
+static inline float mac(const float *a, const float *b, unsigned int size)
 {
 	float f;
 	asm volatile (
